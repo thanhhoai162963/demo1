@@ -1,56 +1,90 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_bai_1/Screen2.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
+void main() {
+  runApp(LifeCycleStatefull());
 }
 
-class _MyAppState extends State<MyApp> {
+class LifeCycleStatefull extends StatefulWidget {
+  @override
+  _LifeCycleStatefullState createState() => _LifeCycleStatefullState();
+}
+
+class _LifeCycleStatefullState extends State<LifeCycleStatefull> {
   @override
   Widget build(BuildContext context) {
-    // String123
-    // String name = "thanh";
-    // String name1 = "thanh";
-    // if (name.isNotEmpty);
-    // if (name  == name1);
-    // StringBuffer buffer = StringBuffer();
-    // buffer.write("a");
-    // buffer.write("a");
-    // buffer.write("a");
-    // String a = '''
-    // asdsadsa
-    // asdsadas
-    // asdsada
-    // ''';
-    var age = null;
-    age ??= 25;
-    if (age is int) {
-      age = 26;
-    }
-    if (age is! String) {
-      age = 24;
-    }
-    bool result = age == 24 ? true : false;
-    StringBuffer stringBuffer = StringBuffer()
-    ..write("object")
-    ..write("object");
-    int a =123;
-    double c = 44.5;
-    double d = a as double;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(),
-        body: Center(
-          child: Container(
-              padding: EdgeInsets.all(20),
-              child: Text('$stringBuffer',
-                  style: TextStyle(fontSize: 25, color: Colors.white)),
-              color: Colors.pink),
+        body: Container(
+          alignment: Alignment.center,
+          child: Life(),
         ),
       ),
     );
   }
 }
+
+class Life extends StatefulWidget {
+  @override
+  _LifeState createState() => _LifeState();
+}
+
+class _LifeState extends State<Life> {
+  @override
+  void initState() {
+    print("initState");
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    print("didChangeDependencies");
+    super.didChangeDependencies();
+  }
+  @override
+  void didUpdateWidget(covariant Life oldWidget) {
+    print("didUpdate");
+    super.didUpdateWidget(oldWidget);
+  }
+  int _number = 0;
+
+
+  @override
+  Widget build(BuildContext context) {
+    print("build");
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          child: Text("Button"),
+          onPressed: () {
+            setState(() {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Screen2()));
+            });
+          },
+        ),
+        Text('$_number'),
+      ],
+    );
+  }
+
+  @override
+  void deactivate() {
+    print("deActive");
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    print("dispose");
+
+    super.dispose();
+  }
+}
+
+
+
+
+
