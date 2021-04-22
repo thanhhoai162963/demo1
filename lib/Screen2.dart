@@ -1,53 +1,58 @@
 import 'package:flutter/material.dart';
 
-import 'Screen3.dart';
+void main() => runApp(MyApp());
 
-class Screen2 extends StatefulWidget {
+class MyApp extends StatefulWidget {
   @override
-  _Screen2State createState() => _Screen2State();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _Screen2State extends State<Screen2> {
-  @override
-  void initState() {
-    print("initState2");
-    super.initState();
-  }
+class _MyAppState extends State<MyApp> {
+  int _counter = 0;
 
-  @override
-  void didChangeDependencies() {
-    print("didChangeDependencies2");
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didUpdateWidget(covariant Screen2 oldWidget) {
-    print("didUpdateWidget2");
-    super.didUpdateWidget(oldWidget);
-  }
   @override
   Widget build(BuildContext context) {
-    print("build2");
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        child: ElevatedButton(
-          child: Text("man hình 3"),
-          onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> Screen3()));
-          },
-        ),
-      ),
+    return MaterialApp(
+        home: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: (){
+              _counter++;
+            },
+          ),
+            body: DemoInherited(
+              child: WidgetGet(),
+              myData: _counter,
+    )));
+  }
+}
+
+class DemoInherited extends InheritedWidget {
+  final int myData;
+
+  DemoInherited({Widget child, this.myData}) : super(child: child);
+
+  static DemoInherited of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<DemoInherited>();
+  }
+
+  @override
+  bool updateShouldNotify(DemoInherited old) {
+    return true;
+  }
+}
+
+class WidgetGet extends StatefulWidget {
+  @override
+  _WidgetGetState createState() => _WidgetGetState();
+}
+
+class _WidgetGetState extends State<WidgetGet> {
+  @override
+  Widget build(BuildContext context) {
+    DemoInherited demo = context.dependOnInheritedWidgetOfExactType();
+    return Container(
+      child: Text('$demo'),
     );
-  }
-  @override
-  void deactivate() {
-    print("deActive2");
-    super.deactivate();
-  }
-  @override
-  void dispose() {
-    print("dispose2");
-    super.dispose();
   }
 }

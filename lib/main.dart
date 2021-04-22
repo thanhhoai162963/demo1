@@ -1,89 +1,72 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_bai_1/Screen2.dart';
 
-void main() {
-  runApp(LifeCycleStatefull());
+void main(){
+  runApp(MyApp());
 }
-
-class LifeCycleStatefull extends StatefulWidget {
+class MyApp extends StatefulWidget {
   @override
-  _LifeCycleStatefullState createState() => _LifeCycleStatefullState();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _LifeCycleStatefullState extends State<LifeCycleStatefull> {
+class _MyAppState extends State<MyApp> {
+  int number = 1;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(),
-        body: Container(
-          alignment: Alignment.center,
-          child: Life(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            setState(() {
+              number++;
+            });
+          },
+        ),
+        body: Inherited(
+          child: const MyText(),
+          data: number,
         ),
       ),
     );
   }
 }
 
-class Life extends StatefulWidget {
+class Inherited extends InheritedWidget {
+  final int data;
+  const Inherited({
+    this.data,
+    Key key,
+    @required Widget child,
+  })
+      : assert(child != null),
+        super(key: key, child: child);
+
+  static Inherited of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<Inherited>();
+  }
+
   @override
-  _LifeState createState() => _LifeState();
+  bool updateShouldNotify(Inherited old) {
+    return true;
+  }
+}
+class MyText extends StatefulWidget {
+
+  @override
+  _MyTextState createState() => _MyTextState();
+
+  const MyText();
 }
 
-class _LifeState extends State<Life> {
-  @override
-  void initState() {
-    print("initState");
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    print("didChangeDependencies");
-    super.didChangeDependencies();
-  }
-  @override
-  void didUpdateWidget(covariant Life oldWidget) {
-    print("didUpdate");
-    super.didUpdateWidget(oldWidget);
-  }
-  int _number = 0;
-
-
+class _MyTextState extends State<MyText> {
   @override
   Widget build(BuildContext context) {
-    print("build");
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          child: Text("Button"),
-          onPressed: () {
-            setState(() {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Screen2()));
-            });
-          },
-        ),
-        Text('$_number'),
-      ],
+    return Center(
+      child: Container(
+        child: Text('${Inherited.of(context).data}'),
+      ),
     );
   }
-
-  @override
-  void deactivate() {
-    print("deActive");
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    print("dispose");
-
-    super.dispose();
-  }
 }
-
 
 
 
