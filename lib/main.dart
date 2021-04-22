@@ -1,73 +1,73 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-void main(){
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
+
 class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _State createState() => _State();
 }
 
-class _MyAppState extends State<MyApp> {
-  int number = 1;
+class _State extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: (){
-            setState(() {
-              number++;
-            });
-          },
-        ),
-        body: Inherited(
-          child: const MyText(),
-          data: number,
-        ),
-      ),
+      home: FutureApp(),
     );
   }
 }
 
-class Inherited extends InheritedWidget {
-  final int data;
-  const Inherited({
-    this.data,
-    Key key,
-    @required Widget child,
-  })
-      : assert(child != null),
-        super(key: key, child: child);
-
-  static Inherited of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<Inherited>();
-  }
-
+class FutureApp extends StatefulWidget {
   @override
-  bool updateShouldNotify(Inherited old) {
-    return true;
-  }
-}
-class MyText extends StatefulWidget {
-
-  @override
-  _MyTextState createState() => _MyTextState();
-
-  const MyText();
+  _FutureAppState createState() => _FutureAppState();
 }
 
-class _MyTextState extends State<MyText> {
+class _FutureAppState extends State<FutureApp> {
+  String name, name1;
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        child: Text('${Inherited.of(context).data}'),
+    String name = "hoai";
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // FutureBuilder(
+            //     future: chuaHoanThanh(),
+            //     builder: (context,snapshot){
+            //       return Text(snapshot.data.toString());
+            //     },
+            // )
+            ElevatedButton(
+                onPressed: () {
+                  // chuaHoanThanh();
+                  // print(chuaHoanThanh());
+
+
+                  //  name1 = await hoanThanh();
+                  // print(name);
+                  // setState(() {
+                  //   name = name1;
+                  // });
+
+                  hoanThanh().then((value) =>    print(value));
+
+                },
+                child: Text(name))
+          ],
+        ),
       ),
     );
   }
 }
 
+Future<void> chuaHoanThanh() {
+  return Future.delayed(Duration(seconds: 3), () => print("thanh"));
+}
 
-
+Future<String> hoanThanh() {
+  return Future.delayed(Duration(seconds: 3), () => "thanh");
+}
 
