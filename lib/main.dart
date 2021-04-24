@@ -1,73 +1,72 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // var streamFuture = Stream<String>.fromFuture(
+  //     Future.delayed(Duration(seconds: 3), () => "nguyen hoai thanh"));
+  // streamFuture.listen((event) {
+  //   print(event);
+  // });
+
+  // var streamIterable = Stream<int>.fromIterable(Iterable.generate(100));
+  // streamIterable.listen((event) {
+  //   print(event);
+  // });
+
+  // var streamPeriodic = Stream.periodic(Duration(seconds: 3),(compulationCount)=> 123).asBroadcastStream();
+  // streamPeriodic.listen((event) {
+  //   print(event.toString());
+  // });
+  // streamPeriodic.listen((event) {
+  //   print(event.toString());
+  // }).pause();
+  // streamPeriodic.listen((event) {
+  //   print(event.toString());
+  // }).resume();
+
+  // ignore: close_sinks
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
-  _State createState() => _State();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _State extends State<MyApp> {
+class _MyAppState extends State<MyApp> {
+  StreamController<int> _streamController = StreamController<int>();
+
+  @override
+  void dispose() {
+    _streamController.close();
+    super.dispose();
+  }
+  Stream<int> streamData(){
+    return Stream.fromFuture(Future.delayed(Duration(seconds: 10),()=> 200));
+  }
+  @override
+  void initState() {
+    _streamController.sink.add(10);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: FutureApp(),
-    );
-  }
-}
-
-class FutureApp extends StatefulWidget {
-  @override
-  _FutureAppState createState() => _FutureAppState();
-}
-
-class _FutureAppState extends State<FutureApp> {
-  String name, name1;
-  @override
-  Widget build(BuildContext context) {
-    String name = "hoai";
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // FutureBuilder(
-            //     future: chuaHoanThanh(),
-            //     builder: (context,snapshot){
-            //       return Text(snapshot.data.toString());
-            //     },
-            // )
-            ElevatedButton(
-                onPressed: () {
-                  // chuaHoanThanh();
-                  // print(chuaHoanThanh());
-
-
-                  //  name1 = await hoanThanh();
-                  // print(name);
-                  // setState(() {
-                  //   name = name1;
-                  // });
-
-                  hoanThanh().then((value) =>    print(value));
-
-                },
-                child: Text(name))
-          ],
+      home: Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: Container(
+            child: StreamBuilder(
+              stream: _streamController.stream,
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  return Text(snapshot.data.toString());
+              },),
+          ),
         ),
       ),
     );
   }
 }
-
-Future<void> chuaHoanThanh() {
-  return Future.delayed(Duration(seconds: 3), () => print("thanh"));
-}
-
-Future<String> hoanThanh() {
-  return Future.delayed(Duration(seconds: 3), () => "thanh");
-}
-
