@@ -17,7 +17,7 @@ class _MyApp1State extends State<MyApp1> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(),
-        body: DemoValueListenable(),
+        body: FuturePV(),
       ),
     );
   }
@@ -206,28 +206,56 @@ class User2 with ChangeNotifier {
 //   }
 // }
 
-class DemoValueListenable extends StatefulWidget {
+// class DemoValueListenable extends StatefulWidget {
+//   @override
+//   _DemoValueListenableState createState() => _DemoValueListenableState();
+// }
+//
+// class _DemoValueListenableState extends State<DemoValueListenable> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Provider(create: (_) => Counter(),
+//       child: Consumer<Counter>(
+//         builder: (context, data, child) {
+//           return ValueListenableProvider<int>.value(value: data.valueNotifier,
+//             child: Consumer<int>(
+//                 builder: (context, data, child) {
+//                   return Text(data.toString());
+//                 }
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+//
+// class Counter {
+//   final ValueNotifier<int> valueNotifier = ValueNotifier(10);
+// }
+//
+
+class FuturePV extends StatefulWidget {
   @override
-  _DemoValueListenableState createState() => _DemoValueListenableState();
+  _FuturePVState createState() => _FuturePVState();
 }
 
-class _DemoValueListenableState extends State<DemoValueListenable> {
+class _FuturePVState extends State<FuturePV> {
+  Future<int> abc(){
+    return Future<int>.delayed(Duration(seconds: 2),()=>10);
+  }
   @override
   Widget build(BuildContext context) {
-    return Provider(create: (context) => Counter(),
-      child: Consumer<Counter>(builder: (context, data, child) {
-        return ValueListenableProvider<int>.value(value: data._valueNotifier,child: Column(
-          children: [
-            Consumer<int>(builder: (context,value,child){
-              return Text(value.toString());
-            })
-          ],
-        ),);
-      },),
-    );
+    return FutureProvider<int>.value(
+              value: abc(),
+              initialData: 0,
+              child: Consumer<int>(
+                builder: (context,data,child){
+                  return Center(
+                    child: Text(data.toString()),
+                  );
+                },
+              ),
+        );
   }
-}
-
-class Counter {
-  final ValueNotifier<int> _valueNotifier = ValueNotifier(10);
 }
