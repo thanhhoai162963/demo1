@@ -3,7 +3,7 @@
 /// title : "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
 /// body : "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
 
-class User {
+class User2 {
   int _userId;
   int _id;
   String _title;
@@ -14,7 +14,7 @@ class User {
   String get title => _title;
   String get body => _body;
 
-  User({
+  User2({
       int userId, 
       int id, 
       String title, 
@@ -25,7 +25,7 @@ class User {
     _body = body;
 }
 
-  User.fromJson(dynamic json) {
+  User2.fromJson(dynamic json) {
     _userId = json["userId"];
     _id = json["id"];
     _title = json["title"];
